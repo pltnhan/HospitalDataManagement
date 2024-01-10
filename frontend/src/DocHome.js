@@ -7,20 +7,18 @@ import {
     Grid,
     Text,
 } from 'grommet';
-
-import './App.css';
-
 const theme = {
     global: {
-        colors: {
-            brand: '#000000',
-            focus: '#000000'
-        },
-        font: {
-            family: 'Lato',
-        },
+      colors: {
+        brand: '#1b517b',
+        focus: "#1b517b",
+        active: "#1b517b",
+      },
+      font: {
+        family: 'Lato',
+      },
     },
-};
+  };
 
 const SidebarButton = ({ label, ...rest }) => (
     <Button plain {...rest}>
@@ -41,7 +39,7 @@ const SidebarButtons = () => {
         <Grommet full theme={theme}>
             <Box fill direction="row">
                 <Box background="brand">
-                    {["Appointments", "View Patients", "Sign Out"].map(label => (
+                    {["Appointments", "Patients Medical Record", "Sign Out"].map(label => (
                         <SidebarButton
                             key={label}
                             label={label}

@@ -8,14 +8,12 @@ import {
   Form,
   Text
 } from 'grommet';
-
-import './App.css';
-
 const theme = {
   global: {
     colors: {
-      brand: '#860102',
-      focus: '#860102'
+      brand: '#1b517b',
+      focus: "#1b517b",
+      active: "#1b517b",
     },
     font: {
       family: 'Lato',
@@ -50,13 +48,12 @@ export class CreateAccount extends Component {
               method="post"
               onSubmit={({ value }) => {
                 console.log("Submit", value);
-
+                console.log(value.email)
                 fetch("http://localhost:3001/checkIfPatientExists?email=" + value.email)
                   .then(res => res.json())
                   .then(res => {
                     console.log(res.data[0]);
-
-                    if ((res.data[0])) {
+                    if (res.data[0]) {
                       window.alert("An account is already associated with that email.");
                       console.log("no user found");
                     } else {
@@ -65,6 +62,9 @@ export class CreateAccount extends Component {
                         + "&province=" + value.province + "&gender=" + value.gender);
                       window.location = "/Home";
                     }
+                  })
+                  .catch(error => {
+                    console.error('Error during fetch or parsing:', error);
                   });
               }}>
               <FormField

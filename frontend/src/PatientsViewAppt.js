@@ -6,20 +6,18 @@ import {
     Grommet,
     Button
 } from 'grommet';
-
-import './App.css';
-
 const theme = {
     global: {
-        colors: {
-            brand: '#000000',
-            focus: '#000000'
-        },
-        font: {
-            family: 'Lato',
-        },
+      colors: {
+        brand: '#1b517b',
+        focus: "#1b517b",
+        active: "#1b517b",
+      },
+      font: {
+        family: 'Lato',
+      },
     },
-};
+  };
 
 const AppBar = (props) => (
     <Box
@@ -62,10 +60,22 @@ export class PatientsViewAppointments extends Component {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                            <th>Date of Appointment</th>
+                            <th>Date</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Start Time</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>End Time</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Symptoms</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -75,10 +85,25 @@ export class PatientsViewAppointments extends Component {
                                     <td align="center" >
                                         {new Date(patient.theDate).toLocaleDateString().substring(0, 10)}
                                     </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td align="center" >{patient.theStart.substring(0, 5)}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td align="center" >{patient.theEnd.substring(0, 5)}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td align="center">{patient.theSymptoms}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td align="center">{patient.status}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
                                         <Button label="See Diagnosis"
                                         href={`/showDiagnoses/${patient.ID}`}
@@ -112,7 +137,7 @@ export class PatientsViewAppointments extends Component {
             <Grommet theme={theme} full>
                 <Box >
                     <AppBar>
-                    <a style={{ color: 'inherit', textDecoration: 'inherit'}} href="/"><Heading level='4' margin='none'>GROUP 07 - Hospital Data Management</Heading></a>
+                    <a style={{ color: '#ededeb', textDecoration: 'none'}} href="/"><Heading level='4' margin='none'>GROUP 07 - Hospital Data Management</Heading></a>
                     </AppBar>
                     <Body />
                 </Box>

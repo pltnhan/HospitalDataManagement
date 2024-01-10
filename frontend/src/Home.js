@@ -7,14 +7,12 @@ import {
   Text,
   Grid
 } from 'grommet';
-
-import './App.css';
-
 const theme = {
   global: {
     colors: {
-      brand: '#000000',
-      focus: '#000000'
+      brand: '#1b517b',
+      focus: "#1b517b",
+      active: "#1b517b",
     },
     font: {
       family: 'Lato',
@@ -29,7 +27,7 @@ const SidebarButton = ({ label, ...rest }) => (
         background={hover ? "#DADADA" : undefined}
         pad={{ horizontal: "large", vertical: "medium" }}
       >
-        <Text size="large">{label}</Text>
+        <Text size="large" color="#ededeb" weight="bold">{label}</Text>
       </Box>
     )}
   </Button>
@@ -94,7 +92,7 @@ export class Home extends Component {
         flex={false}
         style={{borderBottom:"1px solid grey"}}
       >
-        <a style={{ color: 'inherit', textDecoration: 'inherit'}} href="/"><Heading level='4' margin='none'>GROUP 07 - Hospital Data Management</Heading></a>
+        <a style={{ color: '#ededeb', textDecoration:"none"}} href="/"><Heading level='4' margin='none'>GROUP 07 - Hospital Data Management</Heading></a>
       </Box>
     );
 
@@ -127,7 +125,7 @@ export class Home extends Component {
               align="center">
               <Box align="center" pad="large">
                 <Heading 
-                  color="#000000">Welcome Patient
+                  color="#0f3b75">Welcome Patient
                 </Heading>
               </Box>
             </Box>

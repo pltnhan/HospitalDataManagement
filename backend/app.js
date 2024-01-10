@@ -1,17 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var mysql = require('mysql2');
-var cors = require('cors');
-var port = 3001
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var mysql = require("mysql2");
+var cors = require("cors");
+var port = 3001;
 
 //Connection Info
 var con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'pltnhan07072002',
-  database: 'HDMS2',
-  multipleStatements: true
+  host: "localhost",
+  user: "root",
+  password: "pltnhan07072002",
+  database: "HDMS2",
+  multipleStatements: true,
 });
 
 //Connecting To Database
@@ -27,19 +27,19 @@ var who = "";
 
 var app = express();
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 //Signup, Login, Password Reset Related Queries
 
 //Checks if patient exists in database
-app.get('/checkIfPatientExists', (req, res) => {
+app.get("/checkIfPatientExists", (req, res) => {
   let params = req.query;
   let email = params.email;
   let statement = `SELECT * FROM Patient WHERE p_email = "${email}"`;
@@ -48,14 +48,14 @@ app.get('/checkIfPatientExists', (req, res) => {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Creates User Account
-app.get('/makeAccount', (req, res) => {
+app.get("/makeAccount", (req, res) => {
   let query = req.query;
   let name = query.name + " " + query.lastname;
   let dob = query.dob;
@@ -64,30 +64,33 @@ app.get('/makeAccount', (req, res) => {
   let password = query.password;
   let province = query.province;
   let gender = query.gender;
-  let sql_statement1 = `INSERT INTO Account (username, passwo, usertype) 
+  let sql_statement1 =
+    `INSERT INTO Account (username, passwo, usertype) 
                        VALUES ` + `("${email}", "${password}", "Patient")`;
   console.log(sql_statement1);
   con.query(sql_statement1, function (error, results, fields) {
     if (error) throw error;
     else {
-        let sql_statement1 = `INSERT INTO Patient (p_email, p_dob, p_name, p_province, p_biogender, p_phone) 
-                            VALUES ` + `("${email}", "${dob}", "${name}", "${province}", "${gender}", "${phone}")`;
-        console.log(sql_statement1);
-        con.query(sql_statement1, function (error, results, fields) {
-            if (error) throw error;
-        })
-        email_in_use = email;
-        password_in_use = password;
-        who="pat";
-        return res.json({
-            data: results
-      })
-    };
+      let sql_statement1 =
+        `INSERT INTO Patient (p_email, p_dob, p_name, p_province, p_biogender, p_phone) 
+                            VALUES ` +
+        `("${email}", "${dob}", "${name}", "${province}", "${gender}", "${phone}")`;
+      console.log(sql_statement1);
+      con.query(sql_statement1, function (error, results, fields) {
+        if (error) throw error;
+      });
+      email_in_use = email;
+      password_in_use = password;
+      who = "pat";
+      return res.json({
+        data: results,
+      });
+    }
   });
 });
 
 //Checks If Doctor Exists
-app.get('/checkIfDocExists', (req, res) => {
+app.get("/checkIfDocExists", (req, res) => {
   let params = req.query;
   let email = params.email;
   let statement = `SELECT * FROM Doctor WHERE doc_email = "${email}"`;
@@ -96,43 +99,45 @@ app.get('/checkIfDocExists', (req, res) => {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Makes Doctor Account
-app.get('/makeDocAccount', (req, res) => {
+app.get("/makeDocAccount", (req, res) => {
   let params = req.query;
   let name = params.name + " " + params.lastname;
   let email = params.email;
   let password = params.password;
   let phone = params.phone;
-  let sql_statement = `INSERT INTO Doctor (doc_email, doc_phone, doc_name) 
+  let sql_statement =
+    `INSERT INTO Doctor (doc_email, doc_phone, doc_name) 
                        VALUES ` + `("${email}", "${phone}", "${name}")`;
   console.log(sql_statement);
   con.query(sql_statement, function (error, results, fields) {
     if (error) throw error;
     else {
-      let sql_statement = `INSERT INTO Account (username, passwo, usertype) 
+      let sql_statement =
+        `INSERT INTO Account (username, passwo, usertype) 
                        VALUES ` + `("${email}", "${password}", "Doctor")`;
       console.log(sql_statement);
-      con.query(sql_statement, function(error){
+      con.query(sql_statement, function (error) {
         if (error) throw error;
-      })
+      });
       email_in_use = email;
       password_in_use = password;
-      who = 'doc';
+      who = "doc";
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Checks if patient is logged in
-app.get('/checklogin', (req, res) => {
+app.get("/checklogin", (req, res) => {
   let params = req.query;
   let email = params.email;
   let password = params.password;
@@ -143,9 +148,8 @@ app.get('/checklogin', (req, res) => {
   con.query(sql_statement, function (error, results, fields) {
     if (error) {
       console.log("error");
-      return res.status(500).json({ failed: 'error ocurred' })
-    }
-    else {
+      return res.status(500).json({ failed: "error ocurred" });
+    } else {
       if (results.length === 0) {
       } else {
         var string = JSON.stringify(results);
@@ -155,14 +159,14 @@ app.get('/checklogin', (req, res) => {
         who = "pat";
       }
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Checks if doctor is logged in
-app.get('/checkDoclogin', (req, res) => {
+app.get("/checkDoclogin", (req, res) => {
   let params = req.query;
   let email = params.email;
   let password = params.password;
@@ -173,40 +177,39 @@ app.get('/checkDoclogin', (req, res) => {
   con.query(sql_statement, function (error, results, fields) {
     if (error) {
       console.log("eror");
-      return res.status(500).json({ failed: 'error ocurred' })
-    }
-    else {
+      return res.status(500).json({ failed: "error ocurred" });
+    } else {
       if (results.length === 0) {
       } else {
         var string = JSON.stringify(results);
         var json = JSON.parse(string);
         email_in_use = email;
         password_in_use = password;
-        who="doc";
+        who = "doc";
         console.log(email_in_use);
         console.log(password_in_use);
       }
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Returns Who is Logged in
-app.get('/userInSession', (req, res) => {
-  return res.json({ email: `${email_in_use}`, who:`${who}`});
+app.get("/userInSession", (req, res) => {
+  return res.json({ email: `${email_in_use}`, who: `${who}` });
 });
 
 //Logs the person out
-app.get('/endSession', (req, res) => {
+app.get("/endSession", (req, res) => {
   console.log("Ending session");
   email_in_use = "";
   password_in_use = "";
 });
 
 //Returns Date/Time of Appointment
-app.get('/getDateTimeOfAppt', (req, res) => {
+app.get("/getDateTimeOfAppt", (req, res) => {
   let tmp = req.query;
   let id = tmp.id;
   let statement = `SELECT starttime as start, 
@@ -220,33 +223,34 @@ app.get('/getDateTimeOfAppt', (req, res) => {
     else {
       console.log(JSON.stringify(results));
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Patient Info Related
 
 //to get all doctor names
-app.get('/docInfo', (req, res) => {
-  let statement = 'SELECT * FROM Doctor';
+app.get("/docInfo", (req, res) => {
+  let statement = "SELECT * FROM Doctor";
   console.log(statement);
   con.query(statement, function (error, results, fields) {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //To return a particular patient history
-app.get('/OneHistory', (req, res) => {
+app.get("/OneHistory", (req, res) => {
   let params = req.query;
   let email = params.patientEmail;
-  let statement = `SELECT p_biogender,p_name,p_email,p_province, p_phone
+  let statement =
+    `SELECT p_biogender,p_name,p_email,p_province, p_phone
                     FROM Patient
                     WHERE p_email = ` + email;
   console.log(statement);
@@ -254,14 +258,14 @@ app.get('/OneHistory', (req, res) => {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
+        data: results,
+      });
     }
-  })
+  });
 });
 
 //Returns Appointment Info To patient logged In
-app.get('/patientViewAppt', (req, res) => {
+app.get("/patientViewAppt", (req, res) => {
   let tmp = req.query;
   let email = tmp.email;
   let statement = `SELECT b.a_id as ID,
@@ -280,32 +284,33 @@ app.get('/patientViewAppt', (req, res) => {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
 //Checks if history exists
-app.get('/checkIfHistory', (req, res) => {
-    let params = req.query;
-    let email = params.email;
-    let statement = `SELECT p_email FROM Patient p 
+app.get("/checkIfHistory", (req, res) => {
+  let params = req.query;
+  let email = params.email;
+  let statement =
+    `SELECT p_email FROM Patient p 
                     JOIN PatientViewMedicalRecord v ON p.p_id = v.p_id
                     WHERE p_email = ` + email;
-    console.log(statement)
-    con.query(statement, function (error, results, fields) {
-        if (error) throw error;
-        else {
-            return res.json({
-                data: results
-            })
-        };
-    });
+  console.log(statement);
+  con.query(statement, function (error, results, fields) {
+    if (error) throw error;
+    else {
+      return res.json({
+        data: results,
+      });
+    }
+  });
 });
 
 //Adds to Appointment Table
-app.get('/addToPatientSeeAppt', (req, res) => {
+app.get("/addToPatientSeeAppt", (req, res) => {
   let pa = req.query;
   let email = pa.email;
   let id = pa.id;
@@ -321,18 +326,18 @@ app.get('/addToPatientSeeAppt', (req, res) => {
       con.query(sql_try1, function (error, result, fields) {
         if (error) throw error;
       });
-    };   
+    }
   });
 });
 
 //Schedules Appointment
-app.get('/schedule', (req, res) => {
+app.get("/schedule", (req, res) => {
   let params = req.query;
   let time = params.time;
   let date = params.date;
   let id = params.id;
   let endtime = params.endTime;
-  let ndate = new Date(date).toLocaleDateString().substring(0, 10)
+  let ndate = new Date(date).toLocaleDateString().substring(0, 10);
   let sql_date = `STR_TO_DATE('${ndate}', '%m/%d/%Y')`;
   //sql to turn string to sql time obj
   let sql_start = `CONVERT('${time}', TIME)`;
@@ -347,10 +352,10 @@ app.get('/schedule', (req, res) => {
     if (error) throw error;
     else {
       return res.json({
-        data: result
-      })
-        }
+        data: result,
       });
+    }
+  });
   let sql_doctor = `SELECT doc_id as id FROM Doctor d WHERE doc_email = "${doctor}"`;
   con.query(sql_doctor, function (error, results, fields) {
     if (error) throw error;
@@ -361,59 +366,60 @@ app.get('/schedule', (req, res) => {
       console.log(sql_try1);
       con.query(sql_try1, function (error, results, fields) {
         if (error) throw error;
-        else{
+        else {
           let sql_try1 = `INSERT INTO MedicalRecord (mr_date, symptom) 
                                 VALUES (${sql_date}, "${symptom}")`;
           console.log(sql_try1);
           con.query(sql_try1, function (error, results, fields) {
-            if (error) throw error;});
+            if (error) throw error;
+          });
         }
       });
-    };   
+    }
   });
-
 });
 
 //Generates ID for appointment
-app.get('/genApptUID', (req, res) => {
-  let statement = 'SELECT a_id as id FROM Appointment ORDER BY id DESC LIMIT 1;'
+app.get("/genApptUID", (req, res) => {
+  let statement =
+    "SELECT a_id as id FROM Appointment ORDER BY id DESC LIMIT 1;";
   con.query(statement, function (error, results, fields) {
     if (error) throw error;
     else {
       let generated_id = results[0].id + 1;
       return res.json({ id: `${generated_id}` });
-    };
+    }
   });
 });
 
 //To show appointments to doctor
-app.get('/doctorViewAppt', (req, res) => {
+app.get("/doctorViewAppt", (req, res) => {
   let params = req.query;
   let email = params.email;
   let sql_doctor = `SELECT doc_id as did FROM Doctor WHERE doc_email = "${email}"`;
   console.log(sql_doctor);
   con.query(sql_doctor, function (error, results, fields) {
-  if (error) throw error;
-  else {
-    let doc_id = results[0].did;
-    console.log(doc_id);
-    let statement = `SELECT a.a_id as aid, a.a_date as date, a.starttime as starttime, a.status as status, p.p_name as name, pba.symptoms as symptoms
+    if (error) throw error;
+    else {
+      let doc_id = results[0].did;
+      console.log(doc_id);
+      let statement = `SELECT a.a_id as aid, a.a_date as date, a.starttime as starttime, a.status as status, p.p_name as name, pba.symptoms as symptoms
                     FROM Doctor d
                     JOIN DoctorViewAppointment dva ON d.doc_id=dva.doc_id
                     JOIN Appointment a ON dva.a_id = a.a_id
                     JOIN PatientBookAppointment pba ON a.a_id = pba.a_id
                     JOIN Patient p ON pba.p_id = p.p_id
                     WHERE d.doc_id = ${doc_id}`;
-    console.log(statement);
-    con.query(statement, function (error, result) {
-      if (error) throw error;
-      else {
-        return res.json({
-          data: result
-        })
-      }
-    });
-  }
+      console.log(statement);
+      con.query(statement, function (error, result) {
+        if (error) throw error;
+        else {
+          return res.json({
+            data: result,
+          });
+        }
+      });
+    }
   });
 });
 
@@ -433,24 +439,25 @@ app.get('/doctorViewAppt', (req, res) => {
 // });
 
 //To Show all diagnosed appointments till now
-app.get('/allDiagnoses', (req, res) => {
+app.get("/allDiagnoses", (req, res) => {
   let params = req.query;
   let email = params.patientEmail;
-  let statement =`SELECT m.mr_date as date, m.symptom as symptom, m.disease as disease, m.treatment as treatment, d.doc_email as doctor
+  let statement =
+    `SELECT m.mr_date as date, m.symptom as symptom, m.disease as disease, m.treatment as treatment, d.doc_email as doctor
                   FROM MedicalRecord m
                   JOIN PatientViewMedicalRecord pvm ON m.mr_id = pvm.mr_id
                   JOIN Patient p ON pvm.p_id = p.p_id
                   JOIN DoctorViewMedicalRecord dvm ON m.mr_id = dvm.mr_id
                   JOIN Doctor d ON dvm.doc_id = d.doc_id
-                  WHERE p.p_email = ` +email;
+                  WHERE p.p_email = ` + email;
   console.log(statement);
   con.query(statement, function (error, results, fields) {
     if (error) throw error;
     else {
       return res.json({
-        data: results
-      })
-    };
+        data: results,
+      });
+    }
   });
 });
 
@@ -494,11 +501,11 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 app.listen(port, () => {

@@ -8,14 +8,12 @@ import {
     FormField,
     Form
 } from 'grommet';
-
-import './App.css';
-
 const theme = {
     global: {
       colors: {
-        brand: '#000000',
-        focus: '#000000'
+        brand: '#1b517b',
+        focus: "#1b517b",
+        active: "#1b517b",
       },
       font: {
         family: 'Lato',

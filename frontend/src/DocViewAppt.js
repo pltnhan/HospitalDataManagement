@@ -5,8 +5,18 @@ import {
     Heading,
     Grommet,
 } from 'grommet';
-
-import './App.css';
+const theme = {
+    global: {
+      colors: {
+        brand: '#1b517b',
+        focus: "#1b517b",
+        active: "#1b517b",
+      },
+      font: {
+        family: 'Lato',
+      },
+    },
+  };
 
 export class DocViewAppt extends Component {
     state = { apptlist: [] }
@@ -56,21 +66,55 @@ export class DocViewAppt extends Component {
                         <thead>
                             <tr>
                                 <th>Appointment ID</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Patient</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Date</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Start Time</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Symptoms</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             {apptlist.map(appt =>
                                 <tr key={appt.aid}>
+                                    <td align="center">{appt.aid}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{appt.name}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{new Date(appt.date).toLocaleDateString().substring(0,10)} </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{appt.starttime}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{appt.symptoms}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>{appt.status}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td>
                                         {appt.status === "NotDone"?
                                             <Button label="Cancel"
@@ -90,7 +134,7 @@ export class DocViewAppt extends Component {
 
         );
         return (
-            <Grommet full={true}>
+            <Grommet full={true} theme={theme}>
                 <Header />
                 <Box fill={true}>
                     <Body />
