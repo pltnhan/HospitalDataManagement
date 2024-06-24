@@ -1,4 +1,6 @@
-(./presentation.pdf)
+[Project Presentation](./Presentation.pdf)
+
+[Project Report](./Report.pdf)
 
 ### How to run our application
 
